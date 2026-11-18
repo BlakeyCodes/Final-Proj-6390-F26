@@ -1,12 +1,18 @@
 % Add absolute paths for mice compatibility
 % Blake Berge
-% Nov 16 2026
+% ECE 6390
+% November 2026
 clc
 clear
 
 base_dir = pwd;
 addpath('data')
 addpath('plot')
+addpath('ADCS')
+addpath('power')
+addpath('radiation')
+addpath('thermals')
+
 
 % Replace with your path to mice here, found here:
 % https://naif.jpl.nasa.gov/naif/toolkit_MATLAB_PC_Windows_VisualC_MATLAB9.x_64bit.html

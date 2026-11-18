@@ -1,8 +1,5 @@
-%% ECE 6390
+% orbprop.m
 % Orbit Propagator Function
-% Blake Berge
-% November 2026
-
 %% Inputs
 % r0:   [3x1] Inertial position vector in km
 % v0:   [3x1] Inertial velocity vector in km/s
@@ -14,7 +11,9 @@
 % 'YYYY-MM-DDT00:00:00'
 %% Outputs
 % y: [6xn] Vector of PV states. Length dependent on ode45 options/times
-
+% Blake Berge
+% ECE 6390
+% November 2026
 function [t,y] = orbprop(r0,v0,t0,tf,consts,et0)
 
 % Concatenate pos/vel

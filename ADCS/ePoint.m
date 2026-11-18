@@ -2,6 +2,8 @@
 % Compute direction from s/c to Earth for a given s/c orbit state and
 % boresight
 % Also establishes roll reference to angular momentum vector of orbit
+% Blake Berge
+% November 2026
 %% Inputs
 % rSC: [3x1 array]: current s/c position vector
 % vSC: [3x1 array]: current s/c velocity vector
@@ -9,14 +11,11 @@
 % boresight_B [3x1 array]: Axis on which comms antenna is on the s/c
 
 %% outputs
-%C_IB_des [3x3 array]: desired body to inertial attitude that satisfies
-%C_IB_des\hat{b}_B = \hat{b}_{Earth}
-%
-% Blake Berge
-% ECE 6390
-% November 2026
+%at_des [3x3 array]: desired body to inertial attitude that satisfies
+%at_des\hat{b}_B = \hat{b}_{Earth}
 
-function C_IB_des = ePoint(rSC,vSC,et,boresight_B)
+
+function at_des = ePoint(rSC,vSC,et,boresight_B)
 
     % Earth position relative to Moon
     earthPos = cspice_spkezr('EARTH', et, 'J2000', 'NONE', 'MOON');
@@ -68,5 +67,5 @@ function C_IB_des = ePoint(rSC,vSC,et,boresight_B)
     C_body = [bB,yB,zB];
 
     % Desired body-to-inertial attitude
-    C_IB_des = C_ref*C_body';
+    at_des = C_ref*C_body';
 end
