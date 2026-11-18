@@ -15,7 +15,7 @@ addpath("C:\Users\User\Documents\Job and Personal Stuff\Master's Program\Fall 20
 
 try
     cspice_tkvrsn('toolkit');
-    cspice_furnsh(sprintf('%s/data/naif0012.tls',base_dir)) % Location of these files
+    cspice_furnsh(sprintf('%s/data/naif0012.tls',base_dir))
     cspice_furnsh(sprintf('%s/data/de440s.bsp',base_dir))
     fprintf('Successfully Built Mice!')
 catch ME

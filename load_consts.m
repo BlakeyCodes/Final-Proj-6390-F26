@@ -1,12 +1,27 @@
-% Load constants for later use
+% load_consts.m
+% Establish physical, controller, and s/c constants in one spot
 % Blake Berge
 % November 2026
+
 function consts = load_consts
-    consts.muM = 4.9028e12;     % Moon SGP (m^3/s^2)
-    consts.Rm = 1737400;        % m
-    consts.P0 = 4.56e-6;        % N/m^2
-    consts.AU = 1.495978707e11; % m
-    consts.J2m = 202.7e-6;      % no units
-    consts.muE = 3.986e14;      % Earth SGP
-    consts.muSun = 1.327e20;    % Sun SGP
+    % Physical Constants
+    consts.muM = 4.9028e12;     % Moon Standard Gravitational Parameter, SGP (m^3/s^2)
+    consts.Rm = 1737400;        % Moon radius (m)
+    consts.P0 = 4.56e-6;        % SRP constant at 1 AU (N/m^2)
+    consts.AU = 1.495978707e11; % Astronomical Unit (m)
+    consts.J2m = 202.7e-6;      % J2 parameter (no units)
+    consts.muE = 3.986e14;      % Earth SGP (m^3/s^2)
+    consts.muSun = 1.327e20;    % Sun SGP (m^3/s^2)
+    consts.Re = 6378130;        % Earth radius (m)
+
+    % Controller Parameters
+    consts.Kp = diag([20,20,20]); % Prop. controller constant
+    consts.Kd = diag([40,40,40]); % Deriv. controller constant
+
+    % Spacecraft Parameters
+    consts.m = 900;           % Mass
+    consts.area = consts.m/5; % Area (m^2) % TODO: Change to dynamic based on s/c attitude
+    consts.Cr = 0.5;          % Reflectivity
+
+
 end

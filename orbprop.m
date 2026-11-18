@@ -15,8 +15,7 @@
 %% Outputs
 % y: [6xn] Vector of PV states. Length dependent on ode45 options/times
 
-function y = orbprop(r0,v0,t0,tf,m,Cr,area,et0)
-consts = load_consts;
+function [t,y] = orbprop(r0,v0,t0,tf,consts,et0)
 
 % Concatenate pos/vel
 pv0 = [r0; v0].*1e3;
@@ -24,10 +23,10 @@ tspan = [t0 tf];
 
 %% ode45 call
 options = odeset('RelTol',1e-12,'AbsTol',1e-12);
-[t,y] = ode45(@(t,y) orb_prop_ode(t,y,consts,m,area,Cr,et0),tspan,pv0,options);
+[t,y] = ode45(@(t,y) orb_prop_ode(t,y,consts,et0),tspan,pv0,options);
 
 %% Define function w/ odes
-    function dydt = orb_prop_ode(tf,pv0,consts,m,area,Cr,et0)
+    function dydt = orb_prop_ode(tf,pv0,consts,et0)
     et = et0 + tf;
 
     r = pv0(1:3);
@@ -56,14 +55,12 @@ options = odeset('RelTol',1e-12,'AbsTol',1e-12);
 
     % SRP
     sunPos = cspice_spkezr('SUN',et,'J2000','NONE','MOON');
-
     rSun = sunPos(1:3).*1e3; %m
     rSun2Sat = rSun - r;
     sHat = rSun2Sat/norm(rSun2Sat);
+    aSRP = (consts.P0*consts.Cr*consts.area/consts.m)*(consts.AU/norm(rSun2Sat))^2*sHat;
 
-    aSRP = (consts.P0*Cr*area/m)*(consts.AU/norm(rSun2Sat))^2*sHat;
-
-    % Sun effects
+    % Sun gravitational effects
     aSun = consts.muSun*(rSun2Sat/norm(rSun2Sat)^3 - rSun/norm(rSun)^3);
 
     % Eclipse Model
