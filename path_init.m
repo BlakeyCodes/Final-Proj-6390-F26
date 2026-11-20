@@ -12,6 +12,7 @@ addpath('ADCS')
 addpath('power')
 addpath('radiation')
 addpath('thermals')
+addpath('antenna')
 
 
 % Replace with your path to mice here, found here:
