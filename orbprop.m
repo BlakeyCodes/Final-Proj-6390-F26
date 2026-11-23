@@ -18,7 +18,7 @@ function [t,y] = orbprop(r0,v0,t0,tf,consts,et0)
 
 % Concatenate pos/vel
 pv0 = [r0; v0].*1e3;
-tspan = [t0 tf];
+tspan = t0:consts.dt:tf;
 
 %% ode45 call
 options = odeset('RelTol',1e-12,'AbsTol',1e-12);

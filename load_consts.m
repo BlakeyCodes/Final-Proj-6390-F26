@@ -23,7 +23,8 @@ function consts = load_consts
     % Controller Parameters
     consts.Kp = diag([20,20,20]); % Prop. controller constant
     consts.Kd = diag([40,40,40]); % Deriv. controller constant
-
+    consts.dt = 10;               % propagator interval (s)
+    
     % Spacecraft Parameters
     consts.m = 900;           % Mass
     consts.area = consts.m/5; % Area (m^2) % TODO: Change to dynamic based on s/c attitude
