@@ -41,3 +41,11 @@ Plotting scripts for orbit visualizations, attitude error/vis, and anything else
 
 
 
+## References
+S/c Thermal budget: 
+*https://s3vi.ndc.nasa.gov/ssri-kb/static/resources/Preliminary_Thermal_Analysis_of_Small_Satellites.pdf*
+
+*https://ocw.mit.edu/courses/16-851-satellite-engineering-fall-2003/e3a84cc153960fff8d55480fe228bbcc_l23thermalcontro.pdf*
+
+*https://www.valispace.com/wp-content/uploads/2018/12/TCS-sizing-tutorial.pdf*
+##
