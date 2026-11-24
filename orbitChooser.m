@@ -11,23 +11,24 @@ close all
 consts = load_consts;
 
 %% Constellation parameters
-numshells = 10;                      % planes (RAAN spacing) per inclination
-satshells = 10;                      % sats per plane
-a = 1812000;                         % m
-e = 0;
-incl = deg2rad([27 50 76 86]);       % rad (try one inclination at a time to cut run time)
-OMG = (0:numshells-1)*2*pi/numshells;% RAAN, no duplicate at 2*pi
-omg = (0:satshells-1)*2*pi/satshells;% in-plane phasing, no duplicate
-f = 0;
-t0 = 0;  
-tf = 7000;
-elMask = 5;                          % deg
+numshells = 10;                       % planes per inclination by RAAN
+satshells = 10;                       % sats per plane
+a = 1812000;                          % semi-major axis, m
+e = 0;                                % eccentricity
+incl = deg2rad([27 50 76 86]);        % rad (try one inclination at a time to cut run time)
+OMG = (0:numshells-1)*2*pi/numshells; % RAAN, no duplicate at 2*pi
+omg = (0:satshells-1)*2*pi/satshells; % in-plane phasing, no duplicate
+f = 0; % True anomaly, always zero since all orbits are circular
+t0 = 0;                               % Start time
+tf = 7000;                            % End time (s)
+elMask = 5;                           % minimum elevation for sat. to be visible, deg
 
+% Epoch
 dtime = char(datetime(2026,11,16,12,00,00,0000,"TimeZone","UTCLeapSeconds"));
 epochTime = dtime(1:end-2);
 et0 = cspice_str2et(epochTime);
 
-%% Surface sample points (ON the surface)
+%% Surface sample points
 N = 500;
 theta = 2*pi*rand(N,1);
 phi = asin(-1 + 2*rand(N,1));
@@ -39,13 +40,20 @@ nAll = rsAll./consts.Rm;
 nSats = numel(incl)*numshells*satshells;
 satPos = [];
 s = 0;
-figure(1); hold on; grid on; axis vis3d; view(-43,19)
+
+% Plotter
+figure(1) 
+hold on
+axis vis3d
 img = imread('lroc_color_16bit_srgb_4k.tif');
 [xX,yY,zZ] = ellipsoid(0,0,0,consts.Rm,consts.Rm,consts.Rm,75);
 globe = surf(xX,yY,-zZ);
 set(globe,'FaceColor','texturemap','CData',img,'EdgeColor','none');
-xlabel('X (m)'); ylabel('Y (m)'); zlabel('Z (m)'); title('Orbit');
+xlabel('X (m)')
+ylabel('Y (m)')
+zlabel('Z (m)') 
 
+% Iterate over inclination, shells, and sats/shell 
 for n = 1:numel(incl)
     for m = 1:numshells
         for k = 1:satshells
@@ -63,6 +71,7 @@ for n = 1:numel(incl)
     end
 end
 nT = size(satPos,1);
+title('Lunar GPS Orbit Shells')
 
 %% Visibility count (vectorized over time and satellites)
 timevis = zeros(N,nT);
@@ -73,17 +82,17 @@ for j = 1:N
     timevis(j,:) = squeeze(sum(el >= elMask,3)).'; % sats visible vs. time
 end
 scatter3(Xp,Yp,Zp,'bs','filled')
+
 %% Results
 minVis = min(timevis, [], 'all');
-fracOK = mean(timevis >= 4, 'all');
 fprintf('Total satellites: %d\n', nSats);
 fprintf('Minimum visible (any point, any time): %d\n', minVis);
-fprintf('Fraction of point-time samples with >= 4 sats: %.2f%%\n', 100*fracOK);
 
 figure
 plot(tRef(:), min(timevis,[],1), 'r', ...
      tRef(:), median(timevis,1), 'b', ...
      tRef(:), max(timevis,[],1), 'g');
 yline(4,'k--');
-legend('min over points','median','max over points','4-sat requirement');
-xlabel('Time (s)'); ylabel('Satellites visible');
+legend('min over points','median','max over points','4-sat requirement')
+xlabel('Time (s)')
+ylabel('Satellites visible')

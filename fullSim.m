@@ -14,7 +14,7 @@ consts = load_consts;
 r0 = [0; -1937.3; 0]; % km
 v0 = [1.633; 0; .300]; % km/s
 t0 = 0;
-tf = 86400; % Desired end time
+tf = 7000; % Desired end time
 tspan = [t0 tf]; 
 Ti = 273; % Initial s/c temperature (K)
 
